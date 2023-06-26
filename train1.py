@@ -302,10 +302,10 @@ def train_loop(train, fold, LOGGER, model_name, device, border):
             best_score = score
             LOGGER.info(f"Epoch {epoch+1} - Save Best Score: {best_score:.4f} Model")
             torch.save(
-                {"model": model.state_dict(), "preds": preds}, f"/home/kaino/comp/month3/bert-base-uncased_fold{fold}_best.pth"
+                {"model": model.state_dict(), "preds": preds}, f"bert-base-uncased_fold{fold}_best.pth"
             )
 
-    check_point = torch.load(f"/home/kaino/comp/month3/bert-base-uncased_fold{fold}_best.pth")
+    check_point = torch.load(f"bert-base-uncased_fold{fold}_best.pth")
 
     valid_folds["preds"] = check_point["preds"]
 
@@ -319,9 +319,9 @@ def get_result(result_df, border, LOGGER):
 
 
 def main():
-    train = pd.read_csv("/home/kaino/comp/month3/train.csv")
-    eval = pd.read_csv("/home/kaino/comp/month3/test.csv")
-    sub = pd.read_csv("/home/kaino/comp/month3/sample_submit.csv", header=None)
+    train = pd.read_csv("train.csv")
+    eval = pd.read_csv("test.csv")
+    sub = pd.read_csv("sample_submit.csv", header=None)
     sub.columns = ["id", "judgement"]
 
     train["judgement"][2488] = 0
@@ -360,16 +360,16 @@ def main():
     get_result(oof_df, border, LOGGER)
 
     # Save OOF result
-    oof_df.to_csv("/home/kaino/comp/month3/oof_df.csv", index=False)
+    oof_df.to_csv("oof_df.csv", index=False)
 
     # Inference
     predictions = inference(Fold, LOGGER, model_name, device, eval)
-    pd.Series(predictions).to_csv("/home/kaino/comp/month3/predictions.csv", index=False)
+    pd.Series(predictions).to_csv("predictions.csv", index=False)
     predictions1 = np.where(predictions < 0.0262, 0, 1)
 
     # submission
     sub["judgement"] = predictions1
-    sub.to_csv("/home/kaino/comp/month3/submission.csv", index=False, header=False)
+    sub.to_csv("submission.csv", index=False, header=False)
 
 if __name__ == "__main__":
     main()
