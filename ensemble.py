@@ -19,9 +19,9 @@ def read_data(DATA_DIR, csv_name, PROB, eval):
     return df_2 
 
 def main():
-    train = pd.read_csv("/home/kaino/comp/month3/train.csv")
+    train = pd.read_csv("train.csv")
 
-    eval = pd.read_csv("/home/kaino/comp/month3/sample_submit.csv")
+    eval = pd.read_csv("sample_submit.csv")
 
     border = len(train[train["judgement"] == 1]) / len(train["judgement"])
     print(border)
